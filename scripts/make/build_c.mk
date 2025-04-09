@@ -29,6 +29,10 @@ ifeq ($(ARCH), riscv64)
   CFLAGS += -march=rv64gc -mabi=lp64d -mcmodel=medany
 endif
 
+ifeq ($(ARCH), loongarch64)
+  CFLAGS += -march=la64gc -mabi=lp64d -mcmodel=medany
+endif
+
 ifeq ($(findstring fp_simd,$(FEATURES)),)
   ifeq ($(ARCH), x86_64)
     CFLAGS += -mno-sse
@@ -36,7 +40,7 @@ ifeq ($(findstring fp_simd,$(FEATURES)),)
     CFLAGS += -mgeneral-regs-only
   endif
 else
-  ifneq ($(filter $(ARCH),riscv64 aarch64),)
+  ifneq ($(filter $(ARCH),loongarch64 riscv64 aarch64),)
     # for compiler-rt fallbacks like `__divtf3`, `__multf3`, ...
     libgcc := $(shell $(CC) -print-libgcc-file-name)
   endif

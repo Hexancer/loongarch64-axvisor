@@ -17,6 +17,11 @@ qemu_args-x86_64 := \
   -machine q35 \
   -kernel $(OUT_ELF)
 
+qemu_args-loongarch64 := \
+  -machine virt \
+  -bios default \
+  -kernel $(OUT_BIN)
+
 qemu_args-riscv64 := \
   -machine virt \
   -bios default \

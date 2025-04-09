@@ -2,7 +2,7 @@
 
 # Available arguments:
 # * General options:
-#     - `ARCH`: Target architecture: x86_64, riscv64, aarch64
+#     - `ARCH`: Target architecture: x86_64, riscv64, aarch64, loongarch
 #     - `PLATFORM`: Target platform in the `platforms` directory
 #     - `SMP`: Number of CPUs
 #     - `MODE`: Build mode: release, debug
@@ -90,6 +90,8 @@ include scripts/make/platform.mk
 # Target
 ifeq ($(ARCH), x86_64)
   TARGET := x86_64-unknown-none
+else ifeq (($ARCH), loongarch64)
+  TARGET := loongarch64-unknown-none
 else ifeq ($(ARCH), riscv64)
   TARGET := riscv64gc-unknown-none-elf
 else ifeq ($(ARCH), aarch64)
