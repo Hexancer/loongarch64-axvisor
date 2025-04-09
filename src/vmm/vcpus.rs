@@ -156,6 +156,16 @@ fn vcpu_on(vm: VMRef, vcpu_id: usize, entry_point: GuestPhysAddr, arg: usize) {
         vcpu.set_gpr(0, vcpu_id);
         vcpu.set_gpr(1, arg);
     }
+    
+    #[cfg(target_arch = "loongarch64")]
+    {
+        debug!(
+            "vcpu_on: vcpu[{}] entry={:x} opaque={:x}",
+            vcpu_id, entry_point, arg
+        );
+        vcpu.set_gpr(0, vcpu_id);
+        vcpu.set_gpr(1, arg);
+    }
 
     let vcpu_task = alloc_vcpu_task(vm.clone(), vcpu);
 

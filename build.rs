@@ -267,6 +267,8 @@ fn gen_linker_script(arch: &str, platform: &str) -> io::Result<()> {
         "i386:x86-64"
     } else if arch.contains("riscv") {
         "riscv" // OUTPUT_ARCH of both riscv32/riscv64 is "riscv"
+    } else if arch.contains("loongarch") {
+        "loongarch"
     } else {
         arch
     };
