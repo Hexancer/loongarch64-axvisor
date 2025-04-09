@@ -157,9 +157,9 @@ source = "git+https://github.com/arceos-hypervisor/arm_vcpu.git#64a09bd5a3798823
 dependencies = [
  "aarch64-cpu 9.4.0",
  "aarch64_sysreg",
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/arceos-hypervisor/axaddrspace.git)",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.0 (git+https://github.com/arceos-hypervisor/axvcpu.git)",
  "log",
  "numeric-enum-macro",
  "percpu",
@@ -172,6 +172,24 @@ name = "autocfg"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
+
+[[package]]
+name = "axaddrspace"
+version = "0.1.0"
+source = "git+https://github.com/Hexancer/axaddrspace.git?branch=master#c6a5a7e59735af19f353c01e3a9aef09c1d115dc"
+dependencies = [
+ "axerrno",
+ "bit_field",
+ "bitflags 2.9.0",
+ "cfg-if",
+ "lazyinit",
+ "log",
+ "memory_addr",
+ "memory_set",
+ "numeric-enum-macro",
+ "page_table_entry",
+ "page_table_multiarch",
+]
 
 [[package]]
 name = "axaddrspace"
@@ -237,9 +255,9 @@ dependencies = [
 [[package]]
 name = "axdevice"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axdevice.git#8652ce80b2c53310fb7b0f8ac275f2dfcfbb1338"
+source = "git+https://github.com/Hexancer/axdevice.git?branch=master#150003257b0ac6ef56a58f1c32536ddf2fdfacfa"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
  "axdevice_base",
  "axerrno",
  "axvmconfig",
@@ -251,9 +269,9 @@ dependencies = [
 [[package]]
 name = "axdevice_base"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axdevice_crates.git#28d49f147793997a9db1ebb75a34295cde2a107d"
+source = "git+https://github.com/Hexancer/axdevice_crates.git?branch=main#cd3abd6b303ef41d502f75aa0f6abe8d773198c4"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
  "axerrno",
  "cfg-if",
  "memory_addr",
@@ -535,9 +553,20 @@ dependencies = [
 [[package]]
 name = "axvcpu"
 version = "0.1.0"
+source = "git+https://github.com/Hexancer/axvcpu.git?branch=main#93c106f5d08539a7440d1f3d9238bcca2f21faaf"
+dependencies = [
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
+ "axerrno",
+ "memory_addr",
+ "percpu",
+]
+
+[[package]]
+name = "axvcpu"
+version = "0.1.0"
 source = "git+https://github.com/arceos-hypervisor/axvcpu.git#34fc1067c4e9dddf3e43e7d290bcb5cf4127382e"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/arceos-hypervisor/axaddrspace.git)",
  "axerrno",
  "memory_addr",
  "percpu",
@@ -547,11 +576,11 @@ dependencies = [
 name = "axvisor"
 version = "0.1.0"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
  "axconfig",
  "axerrno",
  "axstd",
- "axvcpu",
+ "axvcpu 0.1.0 (git+https://github.com/Hexancer/axvcpu.git?branch=main)",
  "axvm",
  "bitflags 2.9.0",
  "crate_interface",
@@ -573,13 +602,13 @@ dependencies = [
 [[package]]
 name = "axvm"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axvm.git#1610b9b7da4d763b5ef0e8a86e573f74d0a05cbe"
+source = "git+https://github.com/Hexancer/axvm.git?branch=master#2498e57b04bd96ab6e16fdffa6284f0a8599553f"
 dependencies = [
  "arm_vcpu",
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
  "axdevice",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.0 (git+https://github.com/Hexancer/axvcpu.git?branch=main)",
  "axvmconfig",
  "cfg-if",
  "log",
@@ -690,9 +719,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.34"
+version = "4.5.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e958897981290da2a852763fe9cdb89cd36977a5d729023127095fa94d95e2ff"
+checksum = "d8aa86934b44c19c50f87cc2790e19f54f7a67aedb64101c2e1a2e5ecfb73944"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -700,9 +729,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.5.34"
+version = "4.5.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83b0f35019843db2160b5bb19ae09b4e6411ac33fc6a712003c33e03090e2489"
+checksum = "2414dbb2dd0695280da6ea9261e327479e9d37b0630f6b53ba2a11c60c679fd9"
 dependencies = [
  "anstream",
  "anstyle",
@@ -892,9 +921,9 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "indexmap"
-version = "2.8.0"
+version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3954d50fe15b02142bf25d3b8bdadb634ec3948f103d04ffe3031bc8fe9d7058"
+checksum = "cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e"
 dependencies = [
  "equivalent",
  "hashbrown 0.15.2",
@@ -1114,9 +1143,9 @@ dependencies = [
 
 [[package]]
 name = "prettyplease"
-version = "0.2.31"
+version = "0.2.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5316f57387668042f561aae71480de936257848f9c43ce528e311d89a07cadeb"
+checksum = "664ec5419c51e34154eec046ebcba56312d5a2fc3b09a06da188e1ad21afadf6"
 dependencies = [
  "proc-macro2",
  "syn 2.0.100",
@@ -1249,9 +1278,9 @@ name = "riscv_vcpu"
 version = "0.1.0"
 source = "git+https://github.com/arceos-hypervisor/riscv_vcpu.git#15d74de5dc7d38b39b6087ac290f7d1275a8e883"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/arceos-hypervisor/axaddrspace.git)",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.0 (git+https://github.com/arceos-hypervisor/axvcpu.git)",
  "bit_field",
  "bitflags 2.9.0",
  "cfg-if",
@@ -1531,7 +1560,7 @@ checksum = "17b4795ff5edd201c7cd6dca065ae59972ce77d1b80fa0a84d94950ece7d1474"
 dependencies = [
  "indexmap",
  "toml_datetime 0.6.8",
- "winnow 0.7.4",
+ "winnow 0.7.6",
 ]
 
 [[package]]
@@ -1662,9 +1691,9 @@ checksum = "1e90edd2ac1aa278a5c4599b1d89cf03074b610800f866d4026dc199d7929a28"
 
 [[package]]
 name = "winnow"
-version = "0.7.4"
+version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0e97b544156e9bebe1a0ffbc03484fc1ffe3100cbce3ffb17eac35f7cdd7ab36"
+checksum = "63d3fcd9bba44b03821e7d699eeee959f3126dcc4aa8e4ae18ec617c2a5cea10"
 dependencies = [
  "memchr",
 ]
@@ -1720,11 +1749,11 @@ dependencies = [
 [[package]]
 name = "x86_vcpu"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/x86_vcpu.git#5f6eaf4157ee8385ba1a2bfe5060098be18b0245"
+source = "git+https://github.com/Hexancer/x86_vcpu.git?branch=master#e57fa40683a1b095b00c137465b0227a78ddc08c"
 dependencies = [
- "axaddrspace",
+ "axaddrspace 0.1.0 (git+https://github.com/Hexancer/axaddrspace.git?branch=master)",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.0 (git+https://github.com/Hexancer/axvcpu.git?branch=main)",
  "bit_field",
  "bitflags 2.9.0",
  "cfg-if",
