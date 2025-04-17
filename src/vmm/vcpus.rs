@@ -1,6 +1,7 @@
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
 
+use spin::{Once, RwLock};
 use std::os::arceos::api;
 use std::os::arceos::modules::axtask;
 
@@ -18,9 +19,7 @@ const KERNEL_STACK_SIZE: usize = 0x40000; // 256 KiB
 
 /// A global static BTreeMap that holds the wait queues for vCPUs
 /// associated with their respective VMs, identified by their VM IDs.
-///
-/// TODO: find a better data structure to replace the `static mut`, something like a contional variable.
-static mut VM_VCPU_TASK_WAIT_QUEUE: BTreeMap<usize, VMVcpus> = BTreeMap::new();
+static VM_VCPU_TASK_WAIT_QUEUE: Once<RwLock<BTreeMap<usize, VMVcpus>>> = Once::new();
 
 /// A structure representing the vCPUs of a specific VM, including a wait queue
 /// and a list of tasks associated with the vCPUs.
@@ -87,9 +86,7 @@ impl VMVcpus {
 /// * `vm_id` - The ID of the VM whose vCPU wait queue is used to block the current thread.
 ///
 fn wait(vm_id: usize) {
-    unsafe { VM_VCPU_TASK_WAIT_QUEUE.get(&vm_id) }
-        .unwrap()
-        .wait()
+    VM_VCPU_TASK_WAIT_QUEUE.get().unwrap().read().get(&vm_id).unwrap().wait()
 }
 
 /// Blocks the current thread until the provided condition is met, using the wait queue
@@ -104,9 +101,7 @@ fn wait_for<F>(vm_id: usize, condition: F)
 where
     F: Fn() -> bool,
 {
-    unsafe { VM_VCPU_TASK_WAIT_QUEUE.get(&vm_id) }
-        .unwrap()
-        .wait_until(condition)
+    VM_VCPU_TASK_WAIT_QUEUE.get().unwrap().read().get(&vm_id).unwrap().wait_until(condition)
 }
 
 /// Notifies the primary vCPU task associated with the specified VM to wake up and resume execution.
@@ -118,9 +113,7 @@ where
 ///
 pub(crate) fn notify_primary_vcpu(vm_id: usize) {
     // Generally, the primary vCPU is the first and **only** vCPU in the list.
-    unsafe { VM_VCPU_TASK_WAIT_QUEUE.get_mut(&vm_id) }
-        .unwrap()
-        .notify_one()
+    VM_VCPU_TASK_WAIT_QUEUE.get().unwrap().write().get_mut(&vm_id).unwrap().notify_one()
 }
 
 /// Boot target vCPU on the specified VM.
@@ -169,9 +162,7 @@ fn vcpu_on(vm: VMRef, vcpu_id: usize, entry_point: GuestPhysAddr, arg: usize) {
 
     let vcpu_task = alloc_vcpu_task(vm.clone(), vcpu);
 
-    unsafe { VM_VCPU_TASK_WAIT_QUEUE.get_mut(&vm.id()) }
-        .unwrap()
-        .add_vcpu_task(vcpu_task);
+    VM_VCPU_TASK_WAIT_QUEUE.get().unwrap().write().get_mut(&vm.id()).unwrap().add_vcpu_task(vcpu_task);
 }
 
 /// Sets up the primary vCPU for the given VM,
@@ -192,9 +183,7 @@ pub fn setup_vm_primary_vcpu(vm: VMRef) {
     let primary_vcpu = vm.vcpu_list()[primary_vcpu_id].clone();
     let primary_vcpu_task = alloc_vcpu_task(vm.clone(), primary_vcpu);
     vm_vcpus.add_vcpu_task(primary_vcpu_task);
-    unsafe {
-        VM_VCPU_TASK_WAIT_QUEUE.insert(vm_id, vm_vcpus);
-    }
+    VM_VCPU_TASK_WAIT_QUEUE.call_once(|| RwLock::new(BTreeMap::new())).write().insert(vm_id, vm_vcpus);
 }
 
 /// Allocates arceos task for vcpu, set the task's entry function to [`vcpu_run()`],

@@ -19,6 +19,7 @@ TAR_NAME := ubuntu-base-22.04-base-$(ARCH_STR).tar.gz
 
 define run_cmd
   @printf '$(WHITE_C)$(1)$(END_C) $(GRAY_C)$(2)$(END_C)\n'
+  # env
   @$(1) $(2)
 endef
 

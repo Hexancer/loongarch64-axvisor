@@ -3,7 +3,7 @@ lto = true
 
 [package]
 name = "axvisor"
-version = "0.1.0"
+version = "0.1.0" 
 edition = "2024"
 authors = ["Keyang Hu <keyang.hu@qq.com>"]
 exclude = ["crates"]
@@ -32,10 +32,12 @@ axstd = { git = "https://github.com/arceos-hypervisor/arceos.git", branch = "vmm
 ]}
 
 # System dependent modules provided by ArceOS-Hypervisor.
-axvm = { git = "https://github.com/Hexancer/axvm.git", branch = "master"}
-axvcpu = { git = "https://github.com/Hexancer/axvcpu.git", branch = "main"}
-axaddrspace = { git = "https://github.com/Hexancer/axaddrspace.git", branch = "master"}
-# axaddrspace = { path = "../axaddrspace"}
+# axvm = { git = "https://github.com/Hexancer/axvm.git", branch = "master"}
+# axvcpu = { git = "https://github.com/Hexancer/axvcpu.git", branch = "main"}
+# axaddrspace = { git = "https://github.com/Hexancer/axaddrspace.git", branch = "master"}
+axvm = { path = "/home/geng/axvm/"}
+axvcpu = { path = "/home/geng/axvcpu"}
+axaddrspace = { path = "/home/geng/axaddrspace"}
 
 # System independent crates provided by ArceOS, these crates could be imported by remote url. 
 crate_interface = "0.1"

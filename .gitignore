@@ -10,6 +10,7 @@
 *.tmp_its
 *.dtb
 *guest.S
+*.o
 actual.out
 qemu.log
 rusty-tags.vi

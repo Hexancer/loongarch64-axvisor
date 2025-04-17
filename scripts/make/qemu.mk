@@ -19,7 +19,7 @@ qemu_args-x86_64 := \
 
 qemu_args-loongarch64 := \
   -machine virt \
-  -bios default \
+  -bios QEMU_EFI.fd \
   -kernel $(OUT_BIN)
 
 qemu_args-riscv64 := \
